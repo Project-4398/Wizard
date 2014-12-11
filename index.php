@@ -1,78 +1,60 @@
 <?php
 include('header.php');
 ?>
-      
-      <!-- **********************************************************************************************************************************************************
-      MAIN CONTENT
-      *********************************************************************************************************************************************************** -->
-      <!--main content start-->
-      <section id="main-content"><!-- InstanceBeginEditable name="Content Session wrapper" -->
-      <section class="wrapper">
-    
-    
-    			<!-- INCLUDE THE CODE HERE -->
-    
-    
-    
-    
-    
-   						 <h1> This is my index page (Home page)</h1>
-						 <h1> This is my index page (Home page)</h1>
-						 <h1> This is my index page (Home page)</h1>
-						 <h1> This is my index page (Home page)</h1>
-						 <h1> This is my index page (Home page)</h1>
-						 <h1> This is my index page (Home page)</h1>
-						 <h1> This is my index page (Home page)</h1>
-						 <h1> This is my index page (Home page)</h1>
-						 <h1> This is my index page (Home page)</h1>
-						 <h1> This is my index page (Home page)</h1>
-						 <h1> This is my index page (Home page)</h1>
-						 <h1> This is my index page (Home page)</h1>
-						 <h1> This is my index page (Home page)</h1>
-						 <h1> This is my index page (Home page)</h1>
-						 <h1> This is my index page (Home page)</h1>
-						 <h1> This is my index page (Home page)</h1>
-						 <h1> This is my index page (Home page)</h1>
-						 <h1> This is my index page (Home page)</h1>
-						 <h1> This is my index page (Home page)</h1>
-						 <h1> This is my index page (Home page)</h1>
-						 <h1> This is my index page (Home page)</h1>
-						 <h1> This is my index page (Home page)</h1>
-						 <h1> This is my index page (Home page)</h1>
-						 <h1> This is my index page (Home page)</h1>
-						 <h1> This is my index page (Home page)</h1>
-						 <h1> This is my index page (Home page)</h1>
-						 <h1> This is my index page (Home page)</h1>
-						 <h1> This is my index page (Home page)</h1>
-						 <h1> This is my index page (Home page)</h1>
-						 <h1> This is my index page (Home page)</h1>
+<section id="main-content">
+	<section class="wrapperIndex"> 
+	<!--main content start-->
+   	<!-- INCLUDE THE CODE HERE -->
 
     
+   
     
-        
-      </section>
-      </section>
-
-      <!--main content end-->
-  </section>
-
-      <!-- js placed at the end of the document so the pages load faster -->
-    <script src="assets/js/jquery-1.11.1.js"></script>
-    <script src="assets/js/jquery-ui-1.9.2.custom.min.js"></script>
-	<script src="assets/js/fullcalendar/fullcalendar.min.js"></script>    
-    <script src="assets/js/bootstrap.min.js"></script>
-    <script class="include" type="text/javascript" src="assets/js/jquery.dcjqaccordion.2.7.js"></script>
-    <script src="assets/js/jquery.scrollTo.min.js"></script>
-	<script src="assets/js/scrollToTop.js"></script>
-
-
-    <!--common script for all pages-->
-    <script src="assets/js/common-scripts.js"></script>
-
-    <!--script for this page-->
-	<script src="assets/js/calendar-conf-events.js"></script> 
-     
+     <div id="myCarousel" class="carousel slide">
+          <ol class="carousel-indicators">
+            <li data-target="#myCarousel" data-slide-to="0" class="active"></li>
+            <li data-target="#myCarousel" data-slide-to="1"></li>
+            <li data-target="#myCarousel" data-slide-to="2"></li>
+          </ol>
+          <!-- Carousel items -->
+          <div class="carousel-inner">
+            <div class="active item">
+                    <img src="assets/img/Temple_Img/ImageWizard4.png" alt="Img Temple" />
+                    <div class="carousel-caption ">
+                        <h4 class="back-light">Wizard is a student record tracking system for the CIS Department of Temple University to track independent studies, Master and Ph.D. project</h4>
+                   </div>
+            </div>
+            <div class="item">
+            		<img src="assets/img/Temple_Img/ImageWizard1.png" alt="Img Temple" />
+                  <div class="carousel-caption ">
+                    <h4 class="back-light">Wizard is design to be used by admins, students and instructors. Wizard system is able to tracking students, faculties, student progress an academic program tracking. </h4>
+                 </div>
+            </div>
+            <div class="item">
+            
+            		<img src="assets/img/Temple_Img/ImageWizard2.png" alt="Img Temple" />
+                    
+                  <div class="carousel-caption ">
+                    <h4 class="back-light">Wizard is design to be used in all kind of devices like tablet, phones or computer</h4>
+               	</div>
+            </div>
+          </div>
+          <!-- Carousel nav -->
+          <a class="left controls" href="#myCarousel" data-slide="prev">&lsaquo;</a>
+          <a class="right controls" href="#myCarousel" data-slide="next">&rsaquo;</a>
+    </div>
+   
+	<h4 class="labelIndex">Welcome to Wizard</h4>
+    
+	<!--main content end-->
+	</section>
+</section>
+	
+	<?php	include('include.php');	?>
+    
+    <script>
+    $('.carousel').carousel({
+	  interval: 5000
+	})
+    </script>
   
-
-  </body>
-<!-- InstanceEnd --></html>
+  

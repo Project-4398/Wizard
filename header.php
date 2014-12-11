@@ -1,3 +1,31 @@
+<?php
+
+include_once 'assets/core/init.php';
+ session_start();
+
+ if($_SESSION['UserObject'] == ""){
+	header("Location: Login.php");
+ }else{
+	
+	   if(time() - $_SESSION['Time'] < 1800){
+		// Regenerate the time other 30 minutes
+		$_SESSION['Time'] = time();
+		$UserObject = $_SESSION['UserObject'];
+			
+		}else{
+			 header("Location: Login.php?ExpiredSession");
+		 }
+}
+
+
+?>
+
+<script>
+	//// This is to store the user object into and javascript object to be use later on the javascript functions. 
+	var User_Info = <?php echo json_encode($UserObject) ?>;// don't use quotes
+
+</script>
+
 <!--Modified by Connor Tang, 10,13,2014-->
 <!DOCTYPE html>
 <html lang="en">
@@ -7,6 +35,7 @@
     <title>Wizard</title>
     <link href="assets/img/icon/logo.ico" rel="icon" type="image/x-icon"/>
     <link href="assets/css/bootstrap.css" rel="stylesheet">
+    <link href="assets/css/bootstrap-datetimepicker.min.css" type="text/css" media="screen"/>
     <link href="assets/font-awesome/css/font-awesome.css" rel="stylesheet" />
     <link href="assets/js/fullcalendar/bootstrap-fullcalendar.css" rel="stylesheet" />  
     <link href="assets/css/style.css" rel="stylesheet">
@@ -22,7 +51,7 @@
                   <div class="fa fa-bars tooltips" data-placement="right" data-original-title="Toggle Navigation"></div>
               </div>
             <!--logo start-->
-            <a href="http://localhost/index.php" class="logo" target="_self"><img src="assets/img/logo.png" onmouseover="this.src='assets/img/logohover.png'" onmouseout="this.src='assets/img/logo.png'" alt="logo Temple" id="logoHeader1"><img src="assets/img/logoHeader2.png" alt="logo Temple" id="logoHeader2"></a>
+            <a href="index.php" class="logo" target="_self"><img src="assets/img/logo.png" onmouseover="this.src='assets/img/logohover.png'" onmouseout="this.src='assets/img/logo.png'" alt="logo Temple" id="logoHeader1"><img src="assets/img/logoHeader2.png" alt="logo Temple" id="logoHeader2"></a>
             <!--logo end-->
             
 			<!---Menu start-->
@@ -31,27 +60,24 @@
 				   <li>
 					<a href='#'><span>Programs</span></a>
 					<ul>
-						<li><a href='#'><span>Graduate</span></a></li>
-						<li><a href='#'><span>International</span></a></li>
+						<li><a href='Graduate_Programs.php'><span>Graduate</span></a></li>
+						<li><a href='Undegrad_Programs.php'><span>International</span></a></li>
 					</ul>
 				   </li>
-				   <li><a href='#'><span>Forms</span></a>
-					<ul>
-						<li><a href='#'><span>Display Form</span></a></li>
-						<li><a href='#'><span>Create Form</span></a></li>
-						<li><a href='#'><span>Upload PDF</span></a></li>
-					</ul>				   
+				   <li><a href='Form_Create.php'><span>Forms</span></a>
+							   
 				   </li>
 				   <li><a href='#'><span>Organizer</span></a>
 					<ul>
-						<li><a href='#'><span>Calendar</span></a></li>
-						<li><a href='#'><span>Todo List</span></a></li>
+						<li><a href='calendar.php'><span>Calendar</span></a></li>
+						<li><a href='Todo_list.php'><span>Todo List</span></a></li>
 					</ul>				   
 				   </li>
 				   <li class='last'><a href='#'><span>Administrative</span></a>
 					<ul>
-						<li><a href='#'><span>Students</span></a></li>
-						<li><a href='#'><span>Faculties</span></a></li>
+						<li><a href='Students.php'><span>Students</span></a></li>
+						<li><a href='Faculties.php'><span>Faculties</span></a></li>
+						<li><a href='UserMangerFrame.php'><span>Permission Manager</span></a></li>
 					</ul>				   
 				   </li>
 				</ul>
@@ -64,7 +90,7 @@
                   <!-- inbox dropdown start-->
                     <li id="header_inbox_bar" class="dropdown">
                         
-                            <a data-toggle="dropdown" class="dropdown-toggle linkUser" href="index.html#">
+                            <a data-toggle="dropdown" class="dropdown-toggle linkUser" href="index.php#">
                                <img src="assets/img/avatar.png" alt="avatar" />
                             </a>
                             
@@ -85,14 +111,14 @@
 									</li>
 									
 									<li class="userLiMenu">
-										<a href="ajax/calendar.html" class="ajax-link">
+										<a href="Todo_list.php" class="ajax-link">
 											<i class="fa fa-tasks"></i>
 											<span>Tasks</span>
 										</a>
 									</li>
 									
 									<li class="userLiMenu">
-										<a href="assets/PHP/functionLogin.php?logout">
+										<a href="assets/php/functionLogin.php?logout">
 											<i class="fa fa-power-off"></i>
 											<span>Logout</span>
 										</a>
@@ -103,7 +129,7 @@
                                 
                                 
                     </li> <!-- end dropdown -->
-                    <li id="UserNameTopHeader">Welcolme, Juanito </li>
+                    <li id="UserNameTopHeader">Welcome, <?php //echo $UserObject['Name']; ?> </li>
             	</ul>          
             </div>
 			
@@ -113,76 +139,34 @@
                 <ul class="nav top-menu">
                     <!-- settings start -->
                     <li class="dropdown">
-                        <a data-toggle="dropdown" class="dropdown-toggle" href="index.html#">
+                        <a data-toggle="dropdown" class="dropdown-toggle" href="index.php">
                             <i class="fa fa-tasks"></i>
-                            <span class="badge bg-theme">4</span>
+                            <span class="badge bg-theme" id="numTask"></span>
                         </a>
                         <ul class="dropdown-menu extended tasks-bar" id="dropdown-task">
                             <div class="notify-arrow notify-arrow-green" id="notify-arrow-task"></div>
                             <li>
-                                <p class="green">You have 4 pending tasks</p>
+                                <p class="green" id="numTaskTest"></p>
                             </li>
-                            <li>
-                                <a href="index.html#">
-                                    <div class="task-info">
-                                        <div class="desc">DashGum Admin Panel</div>
-                                        <div class="percent">40%</div>
-                                    </div>
-                                    <div class="progress progress-striped">
-                                        <div class="progress-bar progress-bar-success" role="progressbar" aria-valuenow="40" aria-valuemin="0" aria-valuemax="100" style="width: 40%">
-                                            <span class="sr-only">40% Complete (success)</span>
-                                        </div>
-                                    </div>
-                                </a>
-                            </li>
-                            <li>
-                                <a href="index.html#">
-                                    <div class="task-info">
-                                        <div class="desc">Database Update</div>
-                                        <div class="percent">60%</div>
-                                    </div>
-                                    <div class="progress progress-striped">
-                                        <div class="progress-bar progress-bar-warning" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="width: 60%">
-                                            <span class="sr-only">60% Complete (warning)</span>
-                                        </div>
-                                    </div>
-                                </a>
-                            </li>
-                            <li>
-                                <a href="index.html#">
-                                    <div class="task-info">
-                                        <div class="desc">Product Development</div>
-                                        <div class="percent">80%</div>
-                                    </div>
-                                    <div class="progress progress-striped">
-                                        <div class="progress-bar progress-bar-info" role="progressbar" aria-valuenow="80" aria-valuemin="0" aria-valuemax="100" style="width: 80%">
-                                            <span class="sr-only">80% Complete</span>
-                                        </div>
-                                    </div>
-                                </a>
-                            </li>
-                            <li>
-                                <a href="index.html#">
-                                    <div class="task-info">
-                                        <div class="desc">Payments Sent</div>
-                                        <div class="percent">70%</div>
-                                    </div>
-                                    <div class="progress progress-striped">
-                                        <div class="progress-bar progress-bar-danger" role="progressbar" aria-valuenow="70" aria-valuemin="0" aria-valuemax="100" style="width: 70%">
-                                            <span class="sr-only">70% Complete (Important)</span>
-                                        </div>
-                                    </div>
-                                </a>
-                            </li>
+                            
+                            
+                            <ul id="PendingTask"> 
+                            
+                            
+                            			<!-- task complete wiht ajax -->
+                           </ul> <!-- end PendingTask ul =-->
+                           
+                           
+                           
                             <li class="external">
-                                <a href="#">See All Tasks</a>
+                                <a href="Todo_list.php">See All Tasks</a>
                             </li>
                         </ul>
                     </li>
                     <!-- settings end -->
                     <!-- inbox dropdown start-->
                     <li id="header_inbox_bar" class="dropdown">
-                        <a data-toggle="dropdown" class="dropdown-toggle" href="index.html#">
+                        <a data-toggle="dropdown" class="dropdown-toggle" href="index.php">
                             <i class="fa fa-envelope-o"></i>
                             <span class="badge bg-theme">5</span>
                         </a>
@@ -192,7 +176,7 @@
                                 <p class="green">You have 5 new messages</p>
                             </li>
                             <li>
-                                <a href="index.html#">
+                                <a href="index.php">
                                     <span class="photo"><img alt="avatar" src="assets/img/useravatar24.png"></span>
                                     <span class="subject">
                                     <span class="from">Zac Snider</span>
@@ -204,7 +188,7 @@
                                 </a>
                             </li>
                             <li>
-                                <a href="index.html#">
+                                <a href="index.php">
                                     <span class="photo"><img alt="avatar" src="assets/img/useravatar24.png"></span>
                                     <span class="subject">
                                     <span class="from">Divya Manian</span>
@@ -216,7 +200,7 @@
                                 </a>
                             </li>
                             <li>
-                                <a href="index.html#">
+                                <a href="index.php">
                                     <span class="photo"><img alt="avatar" src="assets/img/useravatar24.png"></span>
                                     <span class="subject">
                                     <span class="from">Dan Rogers</span>
@@ -228,7 +212,7 @@
                                 </a>
                             </li>
                             <li>
-                                <a href="index.html#">
+                                <a href="index.php">
                                     <span class="photo"><img alt="avatar" src="assets/img/useravatar24.png"></span>
                                     <span class="subject">
                                     <span class="from">Dj Sherman</span>
@@ -240,7 +224,7 @@
                                 </a>
                             </li>
                             <li>
-                                <a href="index.html#">See all messages</a>
+                                <a href="index.php">See all messages</a>
                             </li>
                         </ul>
                     </li>
@@ -281,7 +265,7 @@
                       <ul class="sub">
                           <li><a  href="Students.php">Students</a></li>
                           <li><a  href="Faculties.php">Faculties</a></li>
-                         
+                          <li><a  href="UserMangerFrame.php">Permission Manager</a></li>
                       </ul>
                   </li>
 
@@ -312,9 +296,9 @@
                           <span>Forms</span>
                       </a>
                       <ul class="sub">
-                      	  <li><a  href="Form_display.php">Display Forms</a></li>
-                          <li><a  href="Form_Create.php">Create Form</a></li>
-                          <li><a  href="Form_PDF.php">Update PDF's Form</a></li>
+                      	 <li><a href="Form_display.php">Display Forms</a></li>
+                          <li><a href="Form_Create.php">Create Form</a></li>
+                          <li><a href="Form_PDF.php">Update PDF's Form</a></li>
                       </ul>
                   </li>
                   <li class="sub-menu">
@@ -330,4 +314,4 @@
           </div>
       </aside>
       <!--sidebar end-->
-	  <a href="#" class="scrollToTop"></a>
+	  <a href="#" class="scrollToTop"></a>	  
