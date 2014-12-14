@@ -16,7 +16,7 @@
 			.jstree({
 				'core' : {
 					'data' : {
-						"url" : "assets/PHP/userManager/role-read.php",
+						"url" : "assets/php/userManager/role-read.php",
 						"data" : function (node) {
 							return { "id" : node.id };
 						}
@@ -51,7 +51,7 @@
 				'plugins' : ['state','contextmenu','unique']
 			})
 			.on('delete_node.jstree', function (e, data) {
-				$.post('assets/PHP/userManager/role-delete.php', { 'id' : data.node.id })
+				$.post('assets/php/userManager/role-delete.php', { 'id' : data.node.id })
 					.fail(function () {
 						data.instance.refresh();
 					});
@@ -60,7 +60,7 @@
 			.on('rename_node.jstree', function (e, data) {
 				var id = data.node.id;
 				if( id.indexOf("j1_") >= 0 ){
-					$.post('assets/PHP/userManager/role-write.php', { 'newrole' : data.text })
+					$.post('assets/php/userManager/role-write.php', { 'newrole' : data.text })
 						.done(function (d) {
 							d = JSON.parse(d);
 							data.instance.set_id(data.node, d.User_Group_Id);
@@ -72,7 +72,7 @@
 							data.instance.refresh();
 						});
 				} else {
-					$.post('assets/PHP/userManager/role-edit.php', { 'id' : id, 'role' : data.text })
+					$.post('assets/php/userManager/role-edit.php', { 'id' : id, 'role' : data.text })
 						.done(function (id) {
 							data.instance.set_id(data.node, id);
 						})
@@ -92,12 +92,13 @@
 					$("#list").setGridParam({'postData' : ''});
 					$("#list").trigger("reloadGrid");
 				}
+				$("#list").setGridParam({ 'postData' : {} });
 			})
 		
 		var u = "Student Name"	
 		//User list grid view		
 	    $("#list").jqGrid({
-			url: "assets/PHP/userManager/user-read.php",
+			url: "assets/php/userManager/user-read.php",
 			datatype: "json",
 			mtype: "GET",
 			colNames: ["UserId", u, "User_Group_Id"],
@@ -129,6 +130,7 @@
 			edit: false,
 			del: false,
 			refresh:true,
+			recreateFilter: true,
 			searchoptions: {left: '30%'}
 		});
 
